@@ -1,0 +1,17 @@
+langchain 
+langchain-core
+langchain-huggingface
+langchain-community
+huggingface-hub
+sentence-transformers
+pymupdf
+python-docx
+python-pptx
+unstructured
+selenium
+pandas
+python-dotenv
+pydantic
+chromadb
+streamlit
+torchvision

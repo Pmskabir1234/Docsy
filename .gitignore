@@ -1,0 +1,34 @@
+# Environments
+.env
+.env.*
+!.env.example
+venv/
+env/
+.venv/
+ENV/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+
+# Vector Stores & Local Databases
+my_chromadb/
+backend/my_chromadb/
+*.chroma
+chroma_db/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDE & OS specific files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.log
