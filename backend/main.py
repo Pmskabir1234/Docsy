@@ -1,3 +1,7 @@
+# Docsy - Document Q&A / RAG Assistant
+# Copyright (c) 2026 Kabir
+# Licensed under the MIT License. See LICENSE file in the project root for full license details.
+
 import os
 from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
 from dotenv import load_dotenv
