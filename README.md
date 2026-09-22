@@ -6,6 +6,8 @@ The system combines document ingestion, recursive text chunking, dense embedding
 
 I built Docsy to understand and implement the complete RAG pipeline, from raw source ingestion to grounded answer generation.
 
+**First stable version is released, check it out** @ [Docsy](https://docsyai.streamlit.app)
+
 ## Overview
 
 Docsy follows a standard RAG workflow:
