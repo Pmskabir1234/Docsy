@@ -8,6 +8,11 @@ from langchain_community.document_loaders import (
     CSVLoader
 )
 
+try:
+    from yt_transcript import YoutubeTranscript
+except ImportError:
+    from backend.yt_transcript import YoutubeTranscript
+
 load_dotenv()
 
 def load_document_content(name: str):
@@ -17,8 +22,11 @@ def load_document_content(name: str):
     
     clean_name = name.strip()
     lower_name = clean_name.lower()
-
-    if lower_name.startswith("http://") or lower_name.startswith("https://"):
+    if "youtube.com" in lower_name or "youtu.be" in lower_name:
+        transcript = YoutubeTranscript()
+        docs = transcript.get_transcript(clean_name)
+        return docs
+    elif lower_name.startswith("http://") or lower_name.startswith("https://"):
         loader = WebBaseLoader(clean_name)
         docs = loader.load()
     elif lower_name.endswith(".pdf"):
@@ -41,8 +49,6 @@ def load_document_content(name: str):
 
     return docs
 
-# a = load_document_content("https://docs.langchain.com/oss/python/langgraph/overview")
-# print(a)
 
 
 

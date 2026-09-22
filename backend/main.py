@@ -29,7 +29,8 @@ parser = StrOutputParser()
 RAG_PROMPT = PromptTemplate(
     template="""
     You are a helpful RAG assistant. User question and context from the provided doc is given.
-    Answer user's query only with the given context. If you can't find the answer simply reply as
+    Answer user's query only with the given context and also consider aswering to general quesitons related to it.
+    If you can't find the answer simply reply as
     'Could not find the answer'. The answer should be structured, simple, easy to understand and user-friendly.
     if the topic seems to be difficult you can explain on the basis of context.
 

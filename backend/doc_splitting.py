@@ -16,7 +16,9 @@ def splitting_doc(doc):
     else:
         content = load_document_content(doc)
 
-    if isinstance(content, dict) or not content:
+    if isinstance(content, dict):
+        return content if "error" in content else {"error": "unsupported file format or empty content"}
+    if not content:
         return {"error": "unsupported file format or empty content"}
 
     splitter = RecursiveCharacterTextSplitter(

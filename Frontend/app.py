@@ -363,26 +363,34 @@ with st.sidebar:
 
     input_mode = st.radio(
         "Select Source Type",
-        options=["Document Upload", "Web URL"],
+        options=["Document Upload", "Web URL","YT video URL"],
         index=0,
         label_visibility="collapsed"
     )
 
     uploaded_file = None
     url_input = ""
+    vid_url = ""
 
     if input_mode == "Document Upload":
         uploaded_file = st.file_uploader(
             "Upload Document",
             type=["pdf", "docx", "pptx", "txt", "csv", "md"],
-            help="Supported formats: PDF, DOCX, PPTX, TXT, CSV, MD",
+            help="Supported formats: PDF, DOCX, PPTX, TXT, MD, CSV",
+            label_visibility="collapsed"
+        )
+    elif input_mode == "Web URL":
+        url_input = st.text_input(
+            "Paste Web Page URL",
+            placeholder="https://example.com/docs",
+            help="Provide any accessible HTTP or HTTPS URL",
             label_visibility="collapsed"
         )
     else:
-        url_input = st.text_input(
-            "Enter Web Page URL",
-            placeholder="https://example.com/documentation",
-            help="Provide any accessible HTTP or HTTPS URL",
+        vid_url = st.text_input(
+            "Enter YouTube Video URL",
+            placeholder="https://www.youtube.com/watch?v=...",
+            help="Provide a public YouTube video link",
             label_visibility="collapsed"
         )
 
@@ -457,6 +465,25 @@ with st.sidebar:
                     st.rerun()
                 except Exception as e:
                     st.error(f"URL parsing failed: {str(e)}")
+
+        elif input_mode == "YT video URL" and vid_url.strip():
+            target_vid = vid_url.strip()
+            if not ("youtube.com" in target_vid.lower() or "youtu.be" in target_vid.lower()):
+                st.error("Please provide a valid YouTube video URL (e.g. https://www.youtube.com/watch?v=...)")
+            else:
+                try:
+                    with st.status("Fetching and parsing YouTube transcript...", expanded=True) as status:
+                        status.write(f"Extracting transcript from {target_vid}...")
+                        status.write("Segmenting transcript chunks and computing embeddings...")
+                        vectorstore = embed_docs(target_vid)
+                        st.session_state.vector_store = vectorstore
+                        st.session_state.current_doc_name = target_vid
+                        st.session_state.current_source_type = "YouTube Video"
+                        st.session_state.messages = []
+                        status.update(label="YouTube transcript indexed successfully", state="complete", expanded=False)
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Transcript indexing failed: {str(e)}")
         else:
             st.warning("Please provide a document or valid URL before indexing.")
 
@@ -526,7 +553,7 @@ if len(st.session_state.messages) == 0:
             <div class="features-grid">
                 <div class="feature-item">
                     <div class="feature-label">Multi-Format Parsing</div>
-                    <div class="feature-desc">Ingests PDF, DOCX, PPTX, CSV, TXT, and live Web URLs into semantic vector structures.</div>
+                    <div class="feature-desc">Ingests PDF, DOCX, PPTX, CSV, TXT, Web URLs, and YouTube transcripts into semantic vector structures.</div>
                 </div>
                 <div class="feature-item">
                     <div class="feature-label">Dense Vector Search</div>
